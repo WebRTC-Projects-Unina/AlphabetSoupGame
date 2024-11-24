@@ -5,7 +5,7 @@ body {
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* Change to align items from top */
     align-items: center;
     height: 100vh;
     margin: 0;
@@ -15,23 +15,12 @@ body {
 h1 {
     font-size: 2.5rem;
     margin-bottom: 30px;
+    margin-top: 20px;
 }
 
-button {
-    background-color: #00ff00;
-    color: black;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 15px #00ff00;
+label {
+    margin-top: 15px;
+    font-size: 1.2rem;
 }
 
 input {
@@ -39,10 +28,11 @@ input {
     color: #00ff00;
     border: 2px solid #00ff00;
     border-radius: 5px;
-    padding: 5px;
+    padding: 10px;
     text-align: center;
     font-family: 'Press Start 2P', cursive;
     width: 200px;
+    margin-bottom: 20px;
 }
 
 input:focus {
@@ -50,20 +40,14 @@ input:focus {
     box-shadow: 0 0 10px #00ff00;
 }
 
-.grid {
-    display: grid;
-    margin: 20px auto;
-    gap: 2px;
+#wordInputs input {
+    margin-top: 10px;
+    margin-right: 10px;
+    display: inline-block;
 }
 
-.cell {
-    width: 30px;
-    height: 30px;
-    background: #333;
-    color: #fff;
-    text-align: center;
-    border: 2px solid #00ff00;
-    cursor: pointer;
+#gridSizeOptions {
+    margin-top: 20px;
 }
 
 #gridSizeOptions button {
@@ -80,6 +64,24 @@ input:focus {
 }
 
 #gridSizeOptions button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #00ff00;
+}
+
+button {
+    background-color: #00ff00;
+    color: black;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 30px; /* Added margin to push it lower */
+}
+
+button:hover {
     transform: scale(1.1);
     box-shadow: 0 0 15px #00ff00;
 }
