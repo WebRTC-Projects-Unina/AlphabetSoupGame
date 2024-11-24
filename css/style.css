@@ -1,0 +1,85 @@
+body {
+    background-color: black;
+    color: #00ff00;
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+}
+
+button {
+    background-color: #00ff00;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #00ff00;
+}
+
+input {
+    background-color: black;
+    color: #00ff00;
+    border: 2px solid #00ff00;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    font-family: 'Press Start 2P', cursive;
+    width: 200px;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+.grid {
+    display: grid;
+    margin: 20px auto;
+    gap: 2px;
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    background: #333;
+    color: #fff;
+    text-align: center;
+    border: 2px solid #00ff00;
+    cursor: pointer;
+}
+
+#gridSizeOptions button {
+    background-color: black;
+    color: #00ff00;
+    border: 2px solid #00ff00;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-family: 'Press Start 2P', cursive;
+    cursor: pointer;
+    margin: 5px;
+    transition: transform 0.2s, box-shadow 0.2s, color 0.2s, background-color 0.2s;
+}
+
+#gridSizeOptions button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #00ff00;
+}
