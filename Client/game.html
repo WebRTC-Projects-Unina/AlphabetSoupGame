@@ -11,12 +11,13 @@
     <h1>Alphabet Soup</h1>
     <div id="grid" class="grid"></div>
     <button onclick="verifyWord()">Verify Word</button>
+    <button id="showSolution" onclick="showSolution()">Show Solution</button>
 
     <script>
         const gridContainer = document.getElementById('grid');
         const words = JSON.parse(localStorage.getItem('words')) || [];
         const gridSize = parseInt(localStorage.getItem('gridSize'));
-
+    
         fetch('/generatePuzzle', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -25,8 +26,10 @@
         .then(response => response.json())
         .then(data => {
             const grid = data.grid;
-            gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 30px)`;
-
+            
+            // Set the grid's column count dynamically
+            gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+    
             grid.forEach(row => {
                 row.forEach(letter => {
                     const cell = document.createElement('div');
@@ -37,7 +40,31 @@
             });
         })
         .catch(error => console.error('Error generating puzzle:', error));
-    </script>
+    
+        // Highlight letters on click
+        gridContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('cell')) {
+                event.target.classList.toggle('highlighted');
+            }
+        });
+    
+        function showSolution() {
+            fetch('/generatePuzzle', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ words, gridSize })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const solution = data.solution;
+                solution.forEach(({ word, grid }) => {
+                    console.log(`Word: ${word}`, grid);
+                });
+    
+                alert("Solution logged in console for now! Display in UI as needed.");
+            })
+            .catch(error => console.error('Error fetching solution:', error));
+        }
+    </script>    
 </body>
 </html>
-

@@ -13,7 +13,7 @@ app.use(express.json()); // To parse JSON requests
 
 // Default route for the home page
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'index.html'));
+    res.sendFile(path.join(__dirname, 'client', 'welcome.html'));
 });
 
 // Route for the setup page
@@ -34,25 +34,30 @@ app.post('/generatePuzzle', (req, res) => {
         return res.status(400).json({ error: 'Words and grid size are required' });
     }
 
-    const grid = generatePuzzle(words, gridSize);
-    res.json({ grid });
+    const { grid, solution } = generatePuzzle(words, gridSize);
+    res.json({ grid, solution });
 });
 
 // Puzzle generation logic
 function generatePuzzle(words, gridSize) {
     const grid = Array(gridSize).fill().map(() => Array(gridSize).fill(''));
+    const solution = []; // To store the solution grid
 
-    words.forEach(word => placeWordInGrid(grid, word, gridSize));
+    words.forEach(word => {
+        if (placeWordInGrid(grid, word, gridSize)) {
+            solution.push({ word, grid: JSON.parse(JSON.stringify(grid)) });
+        }
+    });
+
     fillEmptySpaces(grid);
-    return grid;
+    return { grid, solution };
 }
 
 function placeWordInGrid(grid, word, gridSize) {
     const directions = [
         { x: 1, y: 0 },   // Horizontal
         { x: 0, y: 1 },   // Vertical
-        { x: 1, y: 1 },   // Diagonal
-        { x: -1, y: 1 }   // Reverse Diagonal
+        { x: 1, y: 1 }    // Diagonal
     ];
 
     let placed = false;
@@ -71,6 +76,8 @@ function placeWordInGrid(grid, word, gridSize) {
             placed = true;
         }
     }
+
+    return placed;
 }
 
 function canPlaceWord(grid, word, x, y, direction) {

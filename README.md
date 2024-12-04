@@ -8,3 +8,8 @@ To tackle:
 
 Game logic:
 - what if words dont fit?
+
+
+Errors:
+-always says words arent filled
+-

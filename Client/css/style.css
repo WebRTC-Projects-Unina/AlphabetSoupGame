@@ -85,3 +85,36 @@ button:hover {
     transform: scale(1.1);
     box-shadow: 0 0 15px #00ff00;
 }
+
+.highlighted {
+    background-color: #00ff00;
+    color: black;
+    font-weight: bold;
+}
+
+.grid {
+    display: grid;
+    gap: 5px;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px;
+    background-color: black;
+    color: green;
+    border: 1px solid green;
+    cursor: pointer;
+}
+
+.cell.highlighted {
+    background-color: #00ff00;
+    color: black;
+    font-weight: bold;
+}
+
