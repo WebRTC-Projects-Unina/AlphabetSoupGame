@@ -8,8 +8,14 @@ const httpServer = http.createServer(app);
 const io = new Server(httpServer);
 
 // Serve static files from the "client" directory
-app.use(express.static(path.join(__dirname, 'client')));
+app.use(express.static(path.join(__dirname, 'client')));   //better practice than app.use(express.static('client'))
 app.use(express.json()); // To parse JSON requests
+
+// Start the server
+const PORT = 8181;
+httpServer.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
+});
 
 // Default route for the home page
 app.get('/', (req, res) => {
@@ -105,9 +111,3 @@ function fillEmptySpaces(grid) {
         }
     }
 }
-
-// Start the server
-const PORT = 8181;
-httpServer.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
-});
