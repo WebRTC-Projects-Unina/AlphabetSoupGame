@@ -1,3 +1,4 @@
+/* General Body Styling */
 body {
     background-color: black;
     color: #00ff00;
@@ -5,24 +6,28 @@ body {
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Change to align items from top */
+    justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
     padding: 0;
+    overflow: hidden; /* Prevents scrollbars */
 }
 
+/* Title Styling */
 h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     margin-bottom: 30px;
     margin-top: 20px;
 }
 
+/* Labels */
 label {
     margin-top: 15px;
     font-size: 1.2rem;
 }
 
+/* Inputs */
 input {
     background-color: black;
     color: #00ff00;
@@ -40,12 +45,14 @@ input:focus {
     box-shadow: 0 0 10px #00ff00;
 }
 
+/* Word Input Section */
 #wordInputs input {
     margin-top: 10px;
     margin-right: 10px;
     display: inline-block;
 }
 
+/* Grid Size Options */
 #gridSizeOptions {
     margin-top: 20px;
 }
@@ -68,6 +75,7 @@ input:focus {
     box-shadow: 0 0 15px #00ff00;
 }
 
+/* General Buttons */
 button {
     background-color: #00ff00;
     color: black;
@@ -86,12 +94,14 @@ button:hover {
     box-shadow: 0 0 15px #00ff00;
 }
 
+/* Highlighted Cells in Grid */
 .highlighted {
     background-color: #00ff00;
     color: black;
     font-weight: bold;
 }
 
+/* Grid Container */
 .grid {
     display: grid;
     gap: 5px;
@@ -116,5 +126,28 @@ button:hover {
     background-color: #00ff00;
     color: black;
     font-weight: bold;
+}
+
+/* Welcome & Victory Page Centering */
+.centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 20px;
+}
+
+/* Welcome Image Styling */
+.welcome-image {
+    width: 250px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Victory Page Styling */
+.victory-message {
+    font-size: 2.5rem;
+    margin: 20px 0;
 }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alphabet Soup</title>
+    <title>Victory!</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -16,20 +16,19 @@
     
     <!-- Centered Content -->
     <div class="centered">
-        <img src="/images/alphabet.gif" alt="Alphabet Soup" class="welcome-image">
-        <h1>Alphabet Soup</h1>
-        <button id="playButton">Play</button>
+        <h1>Congratulations!</h1>
+        <p>You found all the words!</p>
+        <button id="playAgainButton">Play Again</button>
     </div>
 
     <!-- Sound Effect -->
     <script>
-        const playButton = document.getElementById('playButton');
-        playButton.addEventListener('click', () => {
+        const playAgainButton = document.getElementById('playAgainButton');
+        playAgainButton.addEventListener('click', () => {
             const soundEffect = new Audio('/audio/retro-coin-1.mp3');
             soundEffect.play();
-            window.location.href = '/setup'; // Redirect to setup page
+            window.location.href = '/'; // Redirect to welcome page
         });
     </script>
 </body>
 </html>
-

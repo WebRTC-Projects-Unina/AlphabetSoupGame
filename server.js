@@ -26,6 +26,12 @@ app.get('/game', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'game.html'));
 });
 
+// Route for the victory page
+app.get('/victory', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'victory.html'));
+});
+
+
 // API endpoint for generating the puzzle
 app.post('/generatePuzzle', (req, res) => {
     const { words, gridSize } = req.body;
