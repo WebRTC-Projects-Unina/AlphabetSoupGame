@@ -21,17 +21,14 @@ httpServer.listen(PORT, () => {
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'welcome.html'));
 });
-
 // Route for the setup page
 app.get('/setup', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'setup.html'));
 });
-
 // Route for the game page
 app.get('/game', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'game.html'));
 });
-
 // Route for the victory page
 app.get('/victory', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'victory.html'));
