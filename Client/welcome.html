@@ -14,22 +14,17 @@
         Your browser does not support the audio element.
     </audio>
     
-    <!-- Centered Content -->
+    <!-- Content -->
     <div class="centered">
         <h1>Alphabet Soup</h1>
         <img src="/images/alphabet.gif" alt="Alphabet Soup" class="welcome-image">   
-        <button id="playButton">Play</button>
+        <button id="playButton" onclick="playButtonSound('/audio/retro-coin-1.mp3', '/setup')">Play</button>
+
     </div>
 
     <!-- Sound Effect -->
-    <script>
-        const playButton = document.getElementById('playButton');
-        playButton.addEventListener('click', () => {
-            const soundEffect = new Audio('/audio/retro-coin-1.mp3');
-            soundEffect.play();
-            window.location.href = '/setup'; // Redirect to setup page
-        });
-    </script>
+    <script src="/js/buttonSound.js"></script>
+
 </body>
 </html>
 

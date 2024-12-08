@@ -8,7 +8,7 @@ const httpServer = http.createServer(app);
 const io = new Server(httpServer);
 
 // Serve static files from the "client" directory
-app.use(express.static(path.join(__dirname, 'client')));   //better practice than app.use(express.static('client'))
+app.use(express.static(path.join(__dirname, 'client')));   // Better practice than app.use(express.static('client'))
 app.use(express.json()); // To parse JSON requests
 
 // Start the server
@@ -41,7 +41,7 @@ app.post('/generatePuzzle', (req, res) => {
 
     if (!words || !gridSize) {
         return res.status(400).json({ error: 'Words and grid size are required' });
-    }
+    }  // If either the words or the gridsize are missing there's a message in the browser
 
     const { grid, solution } = generatePuzzle(words, gridSize);
     res.json({ grid, solution });
@@ -49,8 +49,8 @@ app.post('/generatePuzzle', (req, res) => {
 
 // Puzzle generation logic
 function generatePuzzle(words, gridSize) {
-    const grid = Array(gridSize).fill().map(() => Array(gridSize).fill(''));
-    const solution = []; // To store the solution grid
+    const grid = Array(gridSize).fill().map(() => Array(gridSize).fill('')); // Creates two-dimensional array of size gridSize x gridSize filled with ''
+    const solution = []; // To store the solution grid for the solution button
 
     words.forEach(word => {
         if (placeWordInGrid(grid, word, gridSize)) {
@@ -63,7 +63,7 @@ function generatePuzzle(words, gridSize) {
 }
 
 function placeWordInGrid(grid, word, gridSize) {
-    const directions = [
+    const directions = [  // x is column index and y is line 
         { x: 1, y: 0 },   // Horizontal
         { x: 0, y: 1 },   // Vertical
         { x: 1, y: 1 }    // Diagonal
@@ -74,9 +74,9 @@ function placeWordInGrid(grid, word, gridSize) {
 
     while (!placed && tries < 50) {
         tries++;
-        const direction = directions[Math.floor(Math.random() * directions.length)];
+        const direction = directions[Math.floor(Math.random() * directions.length)];  // Makes up a random number (0,1 or 2) and .floor rounds it to an integer
         const startX = Math.floor(Math.random() * gridSize);
-        const startY = Math.floor(Math.random() * gridSize);
+        const startY = Math.floor(Math.random() * gridSize); // Choosing random direction, starting column and starting line
 
         if (canPlaceWord(grid, word, startX, startY, direction)) {
             for (let i = 0; i < word.length; i++) {
@@ -94,8 +94,8 @@ function canPlaceWord(grid, word, x, y, direction) {
         const newX = x + i * direction.x;
         const newY = y + i * direction.y;
 
-        if (newX < 0 || newX >= grid.length || newY < 0 || newY >= grid.length) return false;
-        if (grid[newY][newX] !== '' && grid[newY][newX] !== word[i]) return false;
+        if (newX < 0 || newX >= grid.length || newY < 0 || newY >= grid.length) return false; // Word fits in the grid dimentions
+        if (grid[newY][newX] !== '' && grid[newY][newX] !== word[i]) return false; // Word isn't being place on top of another unless its a common letter
     }
     return true;
 }

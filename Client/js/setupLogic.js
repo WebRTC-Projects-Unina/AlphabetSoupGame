@@ -58,6 +58,37 @@ function proceedToGame() {
         // Proceed to the game
         window.location.href = '/game';
     } else {
-        alert('Please fill out all word fields!');
-    }
+        alert('Please fill out all word fields!'); }
+
+    
 }
+
+
+// Sound Effect on all buttons
+function playButtonSound(soundPath) {
+    const soundEffect = new Audio(soundPath);
+    soundEffect.play();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Path to your button sound effect
+    const buttonSoundPath = '/audio/retro-coin-1.mp3';
+
+    // Select all buttons on the page
+    const buttons = document.querySelectorAll('button');
+
+    // Attach the sound effect to each button
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            playButtonSound(buttonSoundPath);
+        });
+    });
+
+    // Attach the sound effect to the number input arrows
+    const wordCountInput = document.getElementById('wordCount');
+    if (wordCountInput) {
+        wordCountInput.addEventListener('change', () => {
+            playButtonSound(buttonSoundPath);
+        });
+    }
+});
