@@ -11,6 +11,7 @@ To tackle:
 - add a timer
 - add a victory page with time that took
 - if word wrng play wrong sound effect
+- 
 
 
 Game logic:
