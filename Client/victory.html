@@ -14,10 +14,11 @@
         Your browser does not support the audio element.
     </audio>
     
-    <!-- Centered Content -->
+    <!-- Content -->
     <div class="centered">
         <h1>Congratulations!</h1>
         <p>You found all the words!</p>
+        <img src="/images/victory.gif" alt="Alphabet Soup" class="victory-image">   
         <button onclick="const sound = new Audio('/audio/retro-coin-1.mp3'); sound.play(); sound.onended = () => { window.location.href = '/'; }">Play Again</button>
     </div>
 </body>

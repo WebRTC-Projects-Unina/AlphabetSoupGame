@@ -9,15 +9,12 @@ To activate audio in the pages follow these steps in chrome:
 
 To tackle:
 - add a timer
-- add a victory page with time that took
-- if word wrng play wrong sound effect
+- add to victory page the time that it took
+- if word is wrong play wrong sound effect ((only if I have time))
 - 
 
 
-Game logic:
-- what if words dont fit?
-
-
 Errors:
--doesnt verify words
--last thing: upper case letter input
+- doesnt verify words
+- 
+- last thing: upper case letter input
