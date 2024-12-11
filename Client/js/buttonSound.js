@@ -13,3 +13,16 @@ function playButtonSound(soundPath, redirectUrl = null) {
 
 // Attach the function globally so it can be used in HTML files
 window.playButtonSound = playButtonSound;
+
+// Add event listeners to all buttons on the page
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('button'); // Select all button elements
+    const buttonSoundPath = '/audio/retro-coin-1.mp3'; // Path to button sound
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            playButtonSound(buttonSoundPath);
+        });
+    });
+});
+

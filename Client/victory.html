@@ -18,17 +18,7 @@
     <div class="centered">
         <h1>Congratulations!</h1>
         <p>You found all the words!</p>
-        <button id="playAgainButton">Play Again</button>
+        <button onclick="const sound = new Audio('/audio/retro-coin-1.mp3'); sound.play(); sound.onended = () => { window.location.href = '/'; }">Play Again</button>
     </div>
-
-    <!-- Sound Effect -->
-    <script>
-        const playAgainButton = document.getElementById('playAgainButton');
-        playAgainButton.addEventListener('click', () => {
-            const soundEffect = new Audio('/audio/retro-coin-1.mp3');
-            soundEffect.play();
-            window.location.href = '/'; // Redirect to welcome page
-        });
-    </script>
 </body>
 </html>

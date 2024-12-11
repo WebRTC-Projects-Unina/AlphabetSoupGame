@@ -18,13 +18,7 @@
     <div class="centered">
         <h1>Alphabet Soup</h1>
         <img src="/images/alphabet.gif" alt="Alphabet Soup" class="welcome-image">   
-        <button id="playButton" onclick="playButtonSound('/audio/retro-coin-1.mp3', '/setup')">Play</button>
-
+        <button onclick="const sound = new Audio('/audio/retro-coin-1.mp3'); sound.play(); sound.onended = () => { window.location.href = '/setup'; }">Play</button>
     </div>
-
-    <!-- Sound Effect -->
-    <script src="/js/buttonSound.js"></script>
-
 </body>
 </html>
-
