@@ -15,14 +15,5 @@ To tackle:
 
 
 Errors:
-- doesnt verify words
-- 
+- solution button doesnt work properly
 - last thing: upper case letter input
-
-Game Logic:
-
-Steps to Verify the Word:
-Highlight Cells: The user will highlight cells that form a word by clicking them. Each highlighted cell will be part of the selected word.
-Extract the Selected Word: Once the user finishes their selection, you can extract the word from the highlighted cells.
-Validate the Direction: Check if the selected cells form a straight line either horizontally, vertically, or diagonally.
-Match with Grid: Compare the extracted word with the word placed in the grid at the correct starting position and direction.
