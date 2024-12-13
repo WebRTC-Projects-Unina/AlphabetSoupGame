@@ -38,14 +38,23 @@ app.get('/victory', (req, res) => {
 // API endpoint for generating the puzzle
 app.post('/generatePuzzle', (req, res) => {
     const { words, gridSize } = req.body;
+    const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
+    const solution = [];
 
-    if (!words || !gridSize) {
-        return res.status(400).json({ error: 'Words and grid size are required' });
-    }  // If either the words or the gridsize are missing there's a message in the browser
+    words.forEach(word => {
+        const placedWord = placeWordInGrid(grid, word.toUpperCase(), gridSize);
+        if (placedWord) {
+            solution.push(placedWord); // Store the solution for each word
+        }
+    });
 
-    const { grid, solution } = generatePuzzle(words, gridSize);
+    // Fill remaining empty spaces
+    fillEmptySpaces(grid);
+
+    // Send the grid and solution back to the client
     res.json({ grid, solution });
 });
+
 
 // Puzzle generation logic
 function generatePuzzle(words, gridSize) {
@@ -63,38 +72,44 @@ function generatePuzzle(words, gridSize) {
 }
 
 function placeWordInGrid(grid, word, gridSize) {
-    const directions = [  // x is column index and y is line 
-        { x: 1, y: 0 },   // Horizontal
-        { x: 0, y: 1 },   // Vertical
-        { x: 1, y: 1 }    // Diagonal
+    const directions = [
+        { x: 1, y: 0 }, // Horizontal
+        { x: 0, y: 1 }, // Vertical
+        { x: 1, y: 1 }  // Diagonal
     ];
 
     let placed = false;
     let tries = 0;
+    const positions = []; // To store positions of this word
 
     while (!placed && tries < 50) {
         tries++;
-        const direction = directions[Math.floor(Math.random() * directions.length)];  // Makes up a random number (0,1 or 2) and .floor rounds it to an integer
+        const direction = directions[Math.floor(Math.random() * directions.length)];
         const startX = Math.floor(Math.random() * gridSize);
-        const startY = Math.floor(Math.random() * gridSize); // Choosing random direction, starting column and starting line
+        const startY = Math.floor(Math.random() * gridSize);
 
         if (canPlaceWord(grid, word, startX, startY, direction)) {
             for (let i = 0; i < word.length; i++) {
-                grid[startY + i * direction.y][startX + i * direction.x] = word[i];
+                const x = startX + i * direction.x;
+                const y = startY + i * direction.y;
+
+                grid[y][x] = word[i];
+                positions.push({ x, y }); // Track positions for this word
             }
             placed = true;
         }
     }
 
-    return placed;
+    return placed ? { word, positions } : null; // Return solution map or null if placement failed
 }
+
 
 function canPlaceWord(grid, word, x, y, direction) {
     for (let i = 0; i < word.length; i++) {
         const newX = x + i * direction.x;
         const newY = y + i * direction.y;
 
-        if (newX < 0 || newX >= grid.length || newY < 0 || newY >= grid.length) return false; // Word fits in the grid dimentions
+        if (newX < 0 || newX >= grid.length || newY < 0 || newY >= grid.length) return false; // Word fits in the grid dimensions
         if (grid[newY][newX] !== '' && grid[newY][newX] !== word[i]) return false; // Word isn't being place on top of another unless its a common letter
     }
     return true;

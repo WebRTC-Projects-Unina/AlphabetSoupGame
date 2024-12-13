@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alphabet Soup</title>
+    <title>Alphabet Soup - Game</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
 </head>
 <body>
     <!-- Background Music -->
@@ -14,10 +15,15 @@
         Your browser does not support the audio element.
     </audio>
     
+    <!-- Game -->
     <h1>Alphabet Soup</h1>
     <div id="grid" class="grid"></div>
     <button onclick="verifyWord()">Verify Word</button>
-    <button id="showSolution" onmousedown="showSolution(true)" onmouseup="showSolution(false)">Show Solution</button>
+    <button id="showSolution" onmousedown="showSolution(true)" onmouseup="showSolution(false)">
+        Show Solution
+    </button>
+
+    <!-- External JavaScript -->
     <script src="./js/gameLogic.js"></script>
 </body>
 </html>

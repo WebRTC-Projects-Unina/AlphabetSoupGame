@@ -1,3 +1,4 @@
+// Function to create dynamic word input fields based on user input number
 function createWordInputs() {
     const wordCount = parseInt(document.getElementById('wordCount').value);
     const wordInputContainer = document.getElementById('wordInputContainer');
@@ -16,6 +17,7 @@ function createWordInputs() {
     }
 }
 
+// Function to set the grid size and visually highlight the selected button
 function setGridSize(size) {
     const gridSizeInput = document.getElementById('gridSize');
     gridSizeInput.value = size;
@@ -32,6 +34,7 @@ function setGridSize(size) {
     clickedButton.style.color = 'black';           // Invert text color
 }
 
+// Function to proceed to the game, validating inputs and saving data to localStorage
 function proceedToGame() {
     const wordCount = parseInt(document.getElementById('wordCount').value);
     const gridSize = parseInt(document.getElementById('gridSize').value);
@@ -56,28 +59,31 @@ function proceedToGame() {
         localStorage.setItem('words', JSON.stringify(words));
 
         // Proceed to the game
-        window.location.href = '/game';
+        playButtonSound('/audio/retro-coin-1.mp3', '/game');
     } else {
-        alert('Please fill out all word fields!'); }
-
-    
+        alert('Please fill out all word fields!');
+    }
 }
 
-
-// Sound Effect on all buttons
-function playButtonSound(soundPath) {
+// Function to play a button sound and optionally navigate to a new URL
+function playButtonSound(soundPath, redirectUrl = null) {
     const soundEffect = new Audio(soundPath);
     soundEffect.play();
+
+    // If a redirect URL is provided, navigate after the sound starts
+    if (redirectUrl) {
+        soundEffect.onended = () => {
+            window.location.href = redirectUrl;
+        };
+    }
 }
 
+// Add sound effects to buttons and inputs on the page
 document.addEventListener('DOMContentLoaded', () => {
-    // Path to your button sound effect
-    const buttonSoundPath = '/audio/retro-coin-1.mp3';
+    const buttonSoundPath = '/audio/retro-coin-1.mp3'; // Path to button sound
 
-    // Select all buttons on the page
+    // Select all buttons and attach the sound effect
     const buttons = document.querySelectorAll('button');
-
-    // Attach the sound effect to each button
     buttons.forEach(button => {
         button.addEventListener('click', () => {
             playButtonSound(buttonSoundPath);

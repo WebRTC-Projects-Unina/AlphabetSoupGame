@@ -126,55 +126,35 @@ function checkWordInGrid(word, startCell, direction) {
 function showSolution(show) {
     const cells = document.querySelectorAll('.cell');
 
-    if (show) {
-        // Clear existing highlights first
-        cells.forEach(cell => {
-            cell.style.color = '';
-            cell.style.backgroundColor = '';
-        });
+    if (!Array.isArray(currentSolution) || currentSolution.length === 0) {
+        console.error('Error: currentSolution is not properly populated!', currentSolution);
+        return;
+    }
 
-        // Highlight only the solution cells
-        currentSolution.forEach(solution => {
-            const { positions } = solution; // Use positions to highlight specific cells
+    if (show) {
+        console.log('Showing solution:', currentSolution);
+
+        currentSolution.forEach(({ word, positions }) => {
+            if (!positions || positions.length === 0) {
+                console.error(`Error: Missing positions for word "${word}":`, positions);
+                return;
+            }
+
             positions.forEach(({ x, y }) => {
                 const cell = document.querySelector(`.cell[data-x='${x}'][data-y='${y}']`);
                 if (cell) {
-                    cell.style.color = 'white'; // Make letter visible
-                    cell.style.backgroundColor = 'blue'; // Optional: visually highlight
+                    cell.style.color = 'white';
+                    cell.style.backgroundColor = 'blue';
+                } else {
+                    console.error(`Error: Cell at (${x}, ${y}) not found in DOM.`);
                 }
             });
         });
-
-        // Ensure already found words remain highlighted
-        foundWords.forEach(word => {
-            const solution = currentSolution.find(sol => sol.word === word);
-            if (solution) {
-                solution.positions.forEach(({ x, y }) => {
-                    const cell = document.querySelector(`.cell[data-x='${x}'][data-y='${y}']`);
-                    if (cell) {
-                        cell.style.backgroundColor = 'yellow'; // Use yellow for found words
-                    }
-                });
-            }
-        });
     } else {
-        // Reset colors to default
+        console.log('Hiding solution...');
         cells.forEach(cell => {
+            cell.style.backgroundColor = '';
             cell.style.color = '';
-            cell.style.backgroundColor = ''; // Clear all custom styles
-        });
-
-        // Keep already found words highlighted
-        foundWords.forEach(word => {
-            const solution = currentSolution.find(sol => sol.word === word);
-            if (solution) {
-                solution.positions.forEach(({ x, y }) => {
-                    const cell = document.querySelector(`.cell[data-x='${x}'][data-y='${y}']`);
-                    if (cell) {
-                        cell.style.backgroundColor = 'yellow'; // Highlight found words
-                    }
-                });
-            }
         });
     }
 }
