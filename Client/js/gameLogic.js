@@ -144,7 +144,7 @@ function showSolution(show) {
                 const cell = document.querySelector(`.cell[data-x='${x}'][data-y='${y}']`);
                 if (cell) {
                     cell.style.color = 'white';
-                    cell.style.backgroundColor = 'blue';
+                    cell.style.backgroundColor = 'black';
                 } else {
                     console.error(`Error: Cell at (${x}, ${y}) not found in DOM.`);
                 }

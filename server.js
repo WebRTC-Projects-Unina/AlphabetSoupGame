@@ -103,7 +103,6 @@ function placeWordInGrid(grid, word, gridSize) {
     return placed ? { word, positions } : null; // Return solution map or null if placement failed
 }
 
-
 function canPlaceWord(grid, word, x, y, direction) {
     for (let i = 0; i < word.length; i++) {
         const newX = x + i * direction.x;
