@@ -1,8 +1,30 @@
-// Function to create dynamic word input fields based on user input number
+// Function to set the grid size and highlight the selected button
+function setGridSize(size) {
+    const gridSizeInput = document.getElementById('gridSize');
+    gridSizeInput.value = size;
+
+    // Highlight the selected button
+    const buttons = document.querySelectorAll('#gridSizeOptions button');
+    buttons.forEach(button => {
+        button.style.backgroundColor = ''; // Reset button style
+        button.style.color = '#00ff00';   // Reset text color
+    });
+
+    const clickedButton = event.target;
+    clickedButton.style.backgroundColor = '#00ff00'; // Highlight background
+    clickedButton.style.color = 'black';           // Invert text color
+
+    playButtonSound('/audio/retro-coin-1.mp3');
+}
+
+// Function to create dynamic word input fields based on user input number and condition it
 function createWordInputs() {
     const wordCount = parseInt(document.getElementById('wordCount').value);
     const wordInputContainer = document.getElementById('wordInputContainer');
-    wordInputContainer.innerHTML = ""; // Clear existing inputs
+    wordInputContainer.innerHTML = ""; // Clear existing inputs 
+    const gridSize = parseInt(document.getElementById('gridSize').value); // Fetch the grid size value
+
+    playButtonSound('/audio/retro-coin-1.mp3');
 
     if (wordCount > 5) {
         alert("The maximum number of words is 5.");
@@ -37,84 +59,47 @@ function createWordInputs() {
     }
 }
 
-// Function to set the grid size and visually highlight the selected button
-function setGridSize(size) {
-    const gridSizeInput = document.getElementById('gridSize');
-    gridSizeInput.value = size;
-
-    // Highlight the selected button
-    const buttons = document.querySelectorAll('#gridSizeOptions button');
-    buttons.forEach(button => {
-        button.style.backgroundColor = ''; // Reset button style
-        button.style.color = '#00ff00';   // Reset text color
-    });
-
-    const clickedButton = event.target;
-    clickedButton.style.backgroundColor = '#00ff00'; // Highlight background
-    clickedButton.style.color = 'black';           // Invert text color
-}
-
-// Function to proceed to the game, validating inputs and saving data to localStorage
+// Function to validate inputs, save data to localStorage and proceed to the game if everything was correctly setup
 function proceedToGame() {
     const wordCount = parseInt(document.getElementById('wordCount').value);
     const gridSize = parseInt(document.getElementById('gridSize').value);
     const wordInputContainer = document.getElementById('wordInputContainer');
     const wordInputs = wordInputContainer.querySelectorAll('.word-input');
     const words = [];
-
-    // Validate inputs
-    let allFilled = true;
+ 
+    // Condition each input field again (client won't be able to proceed if something is wrong)
+    let allValid = true;
     wordInputs.forEach(input => {
-        if (input.value.trim() === "") {
-            allFilled = false;
+        const value = input.value.trim();
+
+        if (!/^[A-Za-z]+$/.test(value) || value.length > gridSize || value.length <= 1) { // If it isn't a letter, is bigger than the grid, or smaller than 2
+            allValid = false;
+            //input.reportValidity(); // Show the custom error message if present
         } else {
-            words.push(input.value.trim());
+            words.push(value); // Add to the words list if valid
         }
     });
 
-    if (allFilled && wordCount > 0 && gridSize > 0) {
-        // Save data in localStorage
+    if (allValid && wordCount > 0 && gridSize > 0 && words.length === wordCount) { //Actually validates
         localStorage.setItem('wordCount', wordCount);
         localStorage.setItem('gridSize', gridSize);
         localStorage.setItem('words', JSON.stringify(words));
 
-        // Proceed to the game
-        playButtonSound('/audio/retro-coin-1.mp3', '/game');
+        playButtonSound('/audio/retro-coin-1.mp3', '/game'); // Proceed to the game when everything looks good
     } else {
         alert('Please fill out all word fields correctly!');
     }
 }
 
-// Function to play a button sound and optionally navigate to a new URL
+// Function to play a button sound (and navigate to a new URL if wanted)
 function playButtonSound(soundPath, redirectUrl = null) {
     const soundEffect = new Audio(soundPath);
     soundEffect.play();
 
-    // If a redirect URL is provided, navigate after the sound starts
+    // If a redirect URL is provided, navigate after the sound starts (this wasn't working correctly directly in the proceed function so this was the solution)
     if (redirectUrl) {
         soundEffect.onended = () => {
             window.location.href = redirectUrl;
         };
     }
 }
-
-// Add sound effects to buttons and inputs on the page
-document.addEventListener('DOMContentLoaded', () => {
-    const buttonSoundPath = '/audio/retro-coin-1.mp3'; // Path to button sound
-
-    // Select all buttons and attach the sound effect
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach(button => {
-        button.addEventListener('click', () => {
-            playButtonSound(buttonSoundPath);
-        });
-    });
-
-    // Attach the sound effect to the number input arrows
-    const wordCountInput = document.getElementById('wordCount');
-    if (wordCountInput) {
-        wordCountInput.addEventListener('change', () => {
-            playButtonSound(buttonSoundPath);
-        });
-    }
-});

@@ -18,11 +18,6 @@
     <!-- Content -->
     <h1>Setup Your Alphabet Soup</h1>
 
-    <!-- Number of words selection and input section-->
-    <label for="wordCount">How many words?</label>
-    <input type="number" id="wordCount" min="1" max="5" onchange="createWordInputs()" required>
-    <div id="wordInputContainer"></div>
-
     <!-- Grid size options -->
     <label for="gridSize">Grid Dimensions</label>
     <div id="gridSizeOptions">
@@ -32,11 +27,18 @@
     </div>
     <input type="hidden" id="gridSize" required>
 
+    <!-- Number of words selection and input section-->
+    <label for="wordCount">How many words?</label>
+    <input type="number" id="wordCount" min="1" max="5" onchange="createWordInputs()" required>
+    <div id="wordInputContainer"></div>
+
     <!-- Proceed button -->
-    <button onclick="proceedToGame()">Go!</button>
+    <button onclick="proceedToGame()">
+        Go!
+    </button>
 
     <!-- External JavaScript -->
     <script src="/js/setupLogic.js"></script>
-    
+
 </body>
 </html>
