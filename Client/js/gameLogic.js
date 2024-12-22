@@ -73,7 +73,8 @@ function verifyWord() {
         highlightedCells.forEach((cell) => {
             cell.classList.remove('highlighted');
             cell.classList.add('confirmed');
-            cell.style.backgroundColor = 'yellow'; // Keep visually highlighted
+            cell.style.backgroundColor = '#00AA00'; // Change background to green
+            cell.style.color = 'white'; // Change text color to white
         });
 
         // Check for victory condition
@@ -93,15 +94,16 @@ window.verifyWord = verifyWord;
 function showSolution(show) {
     const cells = document.querySelectorAll('.cell');
 
-    if (!Array.isArray(currentSolution) || currentSolution.length === 0) {
-        console.error('Error: currentSolution is not properly populated!', currentSolution);
+    if (!Array.isArray(solutions) || solutions.length === 0) {
+        console.error('Error: No solution data available!', solutions);
         return;
     }
 
     if (show) {
-        console.log('Showing solution:', currentSolution);
+        console.log('Showing solution:', solutions);
 
-        currentSolution.forEach(({ word, positions }) => {
+        // Highlight all solution positions
+        solutions.forEach(({ word, positions }) => {
             if (!positions || positions.length === 0) {
                 console.error(`Error: Missing positions for word "${word}":`, positions);
                 return;
@@ -110,18 +112,21 @@ function showSolution(show) {
             positions.forEach(({ x, y }) => {
                 const cell = document.querySelector(`.cell[data-x='${x}'][data-y='${y}']`);
                 if (cell) {
-                    cell.style.color = 'white';
-                    cell.style.backgroundColor = 'black';
+                    cell.style.color = 'white'; // Make letters more visible
                 } else {
-                    console.error(`Error: Cell at (${x}, ${y}) not found in DOM.`);
+                    console.error(`Error: Cell at (${x}, ${y}) not found.`);
                 }
             });
         });
     } else {
         console.log('Hiding solution...');
+
+        // Restore the grid to its default state
         cells.forEach(cell => {
-            cell.style.backgroundColor = '';
-            cell.style.color = '';
+            if (!cell.classList.contains('confirmed')) { 
+                cell.style.color = ''; // Reset letter color for unconfirmed cells
+            }
         });
     }
 }
+
