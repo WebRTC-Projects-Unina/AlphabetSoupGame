@@ -1,4 +1,3 @@
-// DOM Elements
 const gridContainer = document.getElementById('grid');
 const words = JSON.parse(localStorage.getItem('words')) || [];
 const gridSize = parseInt(localStorage.getItem('gridSize'));
@@ -9,24 +8,25 @@ let foundWords = new Set();
 fetch('/generatePuzzle', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ words, gridSize })
+    body: JSON.stringify({ words, gridSize }) // Sends data to the server as JSON string
 })
-    .then(response => response.json())
-    .then(data => {
+    .then(response => response.json()) // Parses the JSON data in the server's response into a js object
+    .then(data => {  // Handles the parsed JSON data from the server (grid and solution)
         const { grid, solution } = data;
         currentSolution = solution;
 
-        // Render the grid
-        gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+        gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`; // Styling
+        // Loop that renders each cell of the grid
         grid.forEach((row, rowIndex) => {
             row.forEach((letter, colIndex) => {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                cell.textContent = letter;
+                const cell = document.createElement('div'); // Creates <div> element to represent each cell
+                cell.className = 'cell'; // Styling in CSS
+                cell.textContent = letter; // Sets the cell’s text to the corresponding grid letter
+                // Stores the letters, row and column indexes as data attributes for later use 
                 cell.dataset.letter = letter;
                 cell.dataset.x = colIndex;
                 cell.dataset.y = rowIndex;
-                gridContainer.appendChild(cell);
+                gridContainer.appendChild(cell); // Appends the final cell element to the gridContainer, rendering it on the webpage
             });
         });
     })
@@ -39,16 +39,11 @@ gridContainer.addEventListener('click', (event) => {
     }
 });
 
+
 // Verify if the selected letters form a word
 function verifyWord() {
-    const highlightedCells = Array.from(document.querySelectorAll('.cell.highlighted'));
-    const selectedWord = highlightedCells.map(cell => cell.textContent).join('').toUpperCase();
-
-    // Ensure there's at least two highlighted cells
-    if (highlightedCells.length < 2) {
-        alert("Please select more than one letter.");
-        return;
-    }
+    const highlightedCells = Array.from(document.querySelectorAll('.cell.highlighted')); // Selecting the highligted cells and turning into an array
+    const selectedWord = highlightedCells.map(cell => cell.textContent).join('').toUpperCase(); // Extracts text and creates an array of letters
 
     // Check if the selected word is in the word list
     if (!words.some(word => word.toUpperCase() === selectedWord)) {
