@@ -35,11 +35,19 @@ app.get('/victory', (req, res) => {
 });
 
 
-// POST for generating puzzle and send it over to gameLogic.js
+// POST for sending generated game grid over to CLIENT
 app.post('/generatePuzzle', (req, res) => {  // Using POST because the request includes data in the request body
     const { words, gridSize } = req.body;
-    const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill('')); // 2D array of size gridSize x gridSize, where every cell is an empty string
-    const solution = [];
+    const { grid, solution } = generatePuzzle(words, gridSize);
+    
+    res.json({ grid, solution }); // Sends the game grid and solution back to the front-end
+});
+
+
+// Function for final grid generating
+function generatePuzzle(words, gridSize) {
+    const grid = Array(gridSize).fill().map(() => Array(gridSize).fill('')); // Creates 2D array of size gridSize x gridSize filled with '' (empty strings)
+    const solution = []; // To store the solution grid for the solution button
 
     words.forEach(word => {
         const placedWord = placeWordInGrid(grid, word.toUpperCase(), gridSize); // Places each word of the array words in the grid with all letters uppercase
@@ -47,28 +55,13 @@ app.post('/generatePuzzle', (req, res) => {  // Using POST because the request i
             solution.push(placedWord); // Stores the solution for each word, looking like { word, positions } 
         }
     });
-   
-    fillEmptySpaces(grid); // Fills empty spaces
-    
-    res.json({ grid, solution }); // Sends the game grid and solution back to the front-end
-});
-
-
-// Puzzle generation logic
-function generatePuzzle(words, gridSize) {
-    const grid = Array(gridSize).fill().map(() => Array(gridSize).fill('')); // Creates two-dimensional array of size gridSize x gridSize filled with ''
-    const solution = []; // To store the solution grid for the solution button
-
-    words.forEach(word => {
-        if (placeWordInGrid(grid, word, gridSize)) {
-            solution.push({ word, grid: JSON.parse(JSON.stringify(grid)) });
-        }
-    });
 
     fillEmptySpaces(grid);
+
     return { grid, solution };
 }
 
+// Function for placing words and saving their positions in an array
 function placeWordInGrid(grid, word, gridSize) {
     const directions = [
         { x: 1, y: 0 }, // Horizontal
@@ -78,29 +71,30 @@ function placeWordInGrid(grid, word, gridSize) {
 
     let placed = false;
     let tries = 0;
-    const positions = []; // To store positions of this word
+    const positions = []; // To store positions (x, y) of each letter of the current word
 
-    while (!placed && tries < 50) {
+    while (!placed && tries < 50) {  // Tries to place it 50 times if couldn't be placed before
         tries++;
-        const direction = directions[Math.floor(Math.random() * directions.length)];
-        const startX = Math.floor(Math.random() * gridSize);
-        const startY = Math.floor(Math.random() * gridSize);
+        const direction = directions[Math.floor(Math.random() * directions.length)];  // Picks a random direction from the array directions
+        const startX = Math.floor(Math.random() * gridSize);  // Picks a random column to place the first letter of the word
+        const startY = Math.floor(Math.random() * gridSize);  // Picks a random row to place the first letter of the word
 
-        if (canPlaceWord(grid, word, startX, startY, direction)) {
+        if (canPlaceWord(grid, word, startX, startY, direction)) {  // If the word is place-able, starts the process of placing the word in the grid
             for (let i = 0; i < word.length; i++) {
                 const x = startX + i * direction.x;
                 const y = startY + i * direction.y;
 
-                grid[y][x] = word[i];
-                positions.push({ x, y }); // Track positions for this word
+                grid[y][x] = word[i]; // Actually places the letter of index i in it's supposed grid place grid[y][x]
+                positions.push({ x, y }); // Track positions for this word, keeping the coordinates of each letter (x, y)
             }
-            placed = true;
+            placed = true; // Checks word out of word list as placed
         }
     }
 
-    return placed ? { word, positions } : null; // Return solution map or null if placement failed
+    return placed ? { word, positions } : null; // Returns solution map if word is placed or null if couldn't be placed (in those 50 tries)
 }
 
+// Function for making sure it is possible to place word in certain position
 function canPlaceWord(grid, word, x, y, direction) {
     for (let i = 0; i < word.length; i++) {
         const newX = x + i * direction.x;
@@ -112,11 +106,12 @@ function canPlaceWord(grid, word, x, y, direction) {
     return true;
 }
 
+// Function for filling empty spaces with random alphabet letters
 function fillEmptySpaces(grid) {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     for (let y = 0; y < grid.length; y++) {
         for (let x = 0; x < grid.length; x++) {
-            if (!grid[y][x]) grid[y][x] = alphabet[Math.floor(Math.random() * alphabet.length)];
+            if (!grid[y][x]) grid[y][x] = alphabet[Math.floor(Math.random() * alphabet.length)]; // If the cell is empty, picks a random index of the array alphabet
         }
     }
 }
