@@ -35,24 +35,22 @@ app.get('/victory', (req, res) => {
 });
 
 
-// API endpoint for generating the puzzle
-app.post('/generatePuzzle', (req, res) => {
+// POST for generating puzzle and send it over to gameLogic.js
+app.post('/generatePuzzle', (req, res) => {  // Using POST because the request includes data in the request body
     const { words, gridSize } = req.body;
-    const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
+    const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill('')); // 2D array of size gridSize x gridSize, where every cell is an empty string
     const solution = [];
 
     words.forEach(word => {
-        const placedWord = placeWordInGrid(grid, word.toUpperCase(), gridSize);
+        const placedWord = placeWordInGrid(grid, word.toUpperCase(), gridSize); // Places each word of the array words in the grid with all letters uppercase
         if (placedWord) {
-            solution.push(placedWord); // Store the solution for each word
+            solution.push(placedWord); // Stores the solution for each word, looking like { word, positions } 
         }
     });
-
-    // Fill remaining empty spaces
-    fillEmptySpaces(grid);
-
-    // Send the grid and solution back to the client
-    res.json({ grid, solution });
+   
+    fillEmptySpaces(grid); // Fills empty spaces
+    
+    res.json({ grid, solution }); // Sends the game grid and solution back to the front-end
 });
 
 
