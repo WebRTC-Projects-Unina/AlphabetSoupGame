@@ -4,15 +4,35 @@ function createWordInputs() {
     const wordInputContainer = document.getElementById('wordInputContainer');
     wordInputContainer.innerHTML = ""; // Clear existing inputs
 
+    if (wordCount > 5) {
+        alert("The maximum number of words is 5.");
+    }
+
     if (wordCount > 0 && wordCount <= 5) {
         for (let i = 1; i <= wordCount; i++) {
             const input = document.createElement('input');
-            input.type = 'text';
-            input.placeholder = `Word ${i}`;
-            input.className = 'word-input';
-            input.required = true; // Ensure this field is validated
-            input.id = `word${i}`;
-            wordInputContainer.appendChild(input);
+            input.type = 'text'; // Creates a text input field
+            input.placeholder = `word ${i}`; // Adds a placeholder (word x)
+            input.className = 'word-input'; // Styling in the css file
+            input.required = true; // Ensures the input cannot be left empty
+            input.id = `word${i}`; // Sets ID for each input word
+
+            // Event listener for conditioning word input
+            input.addEventListener('input', () => {
+                const value = input.value.trim();
+
+                if (!/^[A-Za-z]+$/.test(value)) {
+                    input.setCustomValidity("Only letters are allowed!");
+                } else if (value.length > gridSize || value.length <=1) {
+                    input.setCustomValidity(`Word must have characters between 2 and ${gridSize}!`);
+                } else {
+                    input.setCustomValidity(""); // Is a valid input (doesn't show any message)
+                }
+
+                input.reportValidity(); // Sends the .setCustomValidity messages
+            });
+
+            wordInputContainer.appendChild(input); // 
         }
     }
 }
@@ -61,7 +81,7 @@ function proceedToGame() {
         // Proceed to the game
         playButtonSound('/audio/retro-coin-1.mp3', '/game');
     } else {
-        alert('Please fill out all word fields!');
+        alert('Please fill out all word fields correctly!');
     }
 }
 
