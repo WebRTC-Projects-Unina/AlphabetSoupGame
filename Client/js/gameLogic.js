@@ -3,6 +3,7 @@ const words = JSON.parse(localStorage.getItem('words')) || [];
 const gridSize = parseInt(localStorage.getItem('gridSize'));
 let currentSolution = [];
 let foundWords = new Set();
+let solutions = [];
 
 // Fetch the puzzle from the server
 fetch('/generatePuzzle', {
@@ -14,6 +15,7 @@ fetch('/generatePuzzle', {
     .then(data => {  // Handles the parsed JSON data from the server (grid and solution)
         const { grid, solution } = data;
         currentSolution = solution;
+        solutions = solution;
 
         gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`; // Styling
         // Loop that renders each cell of the grid
@@ -42,43 +44,36 @@ gridContainer.addEventListener('click', (event) => {
 
 // Verify if the selected letters form a word
 function verifyWord() {
-    const highlightedCells = Array.from(document.querySelectorAll('.cell.highlighted')); // Selecting the highligted cells and turning into an array
-    const selectedWord = highlightedCells.map(cell => cell.textContent).join('').toUpperCase(); // Extracts text and creates an array of letters
+    const highlightedCells = Array.from(document.querySelectorAll('.cell.highlighted'));
+    const selectedWord = highlightedCells.map(cell => cell.textContent).join('').toUpperCase();
 
-    // Check if the selected word is in the word list
-    if (!words.some(word => word.toUpperCase() === selectedWord)) {
-        alert("Word not in the list. Try again.");
+    if (highlightedCells.length < 2) {
+        alert("Please select more than one letter.");
         return;
     }
 
-    // Get the start and end positions of the selection
-    const startX = parseInt(highlightedCells[0].dataset.x);
-    const startY = parseInt(highlightedCells[0].dataset.y);
-    const endX = parseInt(highlightedCells[highlightedCells.length - 1].dataset.x);
-    const endY = parseInt(highlightedCells[highlightedCells.length - 1].dataset.y);
+    // Extract positions from highlighted cells
+    const selectedPositions = highlightedCells.map((cell) => ({
+        x: parseInt(cell.dataset.x),
+        y: parseInt(cell.dataset.y),
+    }));
 
-    // Check if the selection follows one of the three allowed directions (horizontal, vertical, diagonal)
-    const isHorizontal = startY === endY && Math.abs(endX - startX) === highlightedCells.length - 1;
-    const isVertical = startX === endX && Math.abs(endY - startY) === highlightedCells.length - 1;
-    const isDiagonal = Math.abs(endX - startX) === Math.abs(endY - startY);
+    // Check if the selected word matches any solution
+    const matchingSolution = solutions.find(
+        (sol) =>
+            sol.word.toUpperCase() === selectedWord &&
+            JSON.stringify(sol.positions) === JSON.stringify(selectedPositions)
+    );
 
-    // If the selection is not in one of the valid directions, alert the user
-    if (!(isHorizontal || isVertical || isDiagonal)) {
-        alert("Invalid selection direction. Please select in a straight line.");
-        return;
-    }
-
-    // Verify if the selected word matches the word in the grid (consider direction)
-    const direction = isHorizontal ? 'horizontal' : (isVertical ? 'vertical' : 'diagonal');
-    if (checkWordInGrid(selectedWord, highlightedCells[0], direction)) {
-        alert(`Correct! ${selectedWord} found.`);
+    if (matchingSolution) {
+        alert(`Correct! You found the word: ${selectedWord}`);
         foundWords.add(selectedWord);
 
-        // Mark the cells as confirmed and keep them highlighted
-        highlightedCells.forEach(cell => {
+        // Mark cells as confirmed and keep them highlighted
+        highlightedCells.forEach((cell) => {
             cell.classList.remove('highlighted');
             cell.classList.add('confirmed');
-            cell.style.backgroundColor = 'yellow'; // Keep cells visually highlighted
+            cell.style.backgroundColor = 'yellow'; // Keep visually highlighted
         });
 
         // Check for victory condition
@@ -91,31 +86,8 @@ function verifyWord() {
     }
 }
 
-// Function to check if the selected word matches the grid's word placement
-function checkWordInGrid(word, startCell, direction) {
-    const startX = parseInt(startCell.dataset.x);
-    const startY = parseInt(startCell.dataset.y);
-    const directions = {
-        horizontal: { x: 1, y: 0 },
-        vertical: { x: 0, y: 1 },
-        diagonal: { x: 1, y: 1 }
-    };
+window.verifyWord = verifyWord;
 
-    const dir = directions[direction];
-    let currentX = startX;
-    let currentY = startY;
-
-    // Loop through each letter of the word and check if it matches the grid's word
-    for (let i = 0; i < word.length; i++) {
-        const cell = document.querySelector(`.cell[data-x='${currentX}'][data-y='${currentY}']`);
-        if (!cell || cell.textContent.toUpperCase() !== word[i]) {
-            return false;  // Word doesn't match at this position
-        }
-        currentX += dir.x;
-        currentY += dir.y;
-    }
-    return true;  // Word matches in the grid
-}
 
 // Show solution while holding the button
 function showSolution(show) {
