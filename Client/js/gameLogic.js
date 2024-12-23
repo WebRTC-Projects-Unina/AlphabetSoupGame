@@ -42,7 +42,7 @@ gridContainer.addEventListener('click', (event) => {
 });
 
 
-// Verify if the selected letters form a word
+// Function to verify if the selected (highlighted) letters form one of the words
 function verifyWord() {
     const highlightedCells = Array.from(document.querySelectorAll('.cell.highlighted'));
     const selectedWord = highlightedCells.map(cell => cell.textContent).join('').toUpperCase();
@@ -58,7 +58,7 @@ function verifyWord() {
         y: parseInt(cell.dataset.y),
     }));
 
-    // Check if the selected word matches any solution
+    // Check if the selected word matches any solution in terms of text and position
     const matchingSolution = solutions.find(
         (sol) =>
             sol.word.toUpperCase() === selectedWord &&
@@ -73,11 +73,11 @@ function verifyWord() {
         highlightedCells.forEach((cell) => {
             cell.classList.remove('highlighted');
             cell.classList.add('confirmed');
-            cell.style.backgroundColor = '#00AA00'; // Change background to green
-            cell.style.color = 'white'; // Change text color to white
+            cell.style.backgroundColor = '#00ff00';
+            cell.style.color = 'white';
         });
 
-        // Check for victory condition
+        // Check if all words have been found to proceed to victory
         if (foundWords.size === words.length) {
             alert("You found all the words! Redirecting to victory...");
             window.location.href = '/victory';
@@ -87,17 +87,9 @@ function verifyWord() {
     }
 }
 
-window.verifyWord = verifyWord;
-
-
-// Show solution while holding the button
+// Function to show solution while holding the solution button
 function showSolution(show) {
     const cells = document.querySelectorAll('.cell');
-
-    if (!Array.isArray(solutions) || solutions.length === 0) {
-        console.error('Error: No solution data available!', solutions);
-        return;
-    }
 
     if (show) {
         console.log('Showing solution:', solutions);
@@ -112,7 +104,7 @@ function showSolution(show) {
             positions.forEach(({ x, y }) => {
                 const cell = document.querySelector(`.cell[data-x='${x}'][data-y='${y}']`);
                 if (cell) {
-                    cell.style.color = 'white'; // Make letters more visible
+                    cell.style.color = 'white';
                 } else {
                     console.error(`Error: Cell at (${x}, ${y}) not found.`);
                 }
@@ -121,12 +113,11 @@ function showSolution(show) {
     } else {
         console.log('Hiding solution...');
 
-        // Restore the grid to its default state
+        // Restore the grid colors
         cells.forEach(cell => {
             if (!cell.classList.contains('confirmed')) { 
-                cell.style.color = ''; // Reset letter color for unconfirmed cells
+                cell.style.color = '';
             }
         });
     }
 }
-
