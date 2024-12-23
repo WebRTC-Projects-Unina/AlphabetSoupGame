@@ -1,14 +1,14 @@
 {
   "name": "webrtc-project",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "A project written in JavaScript and HTML for playing a simple alphabet soup game.",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["game", "retro", "audio"],
+  "author": "Marta Rosa <martacrrosa@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.3",
