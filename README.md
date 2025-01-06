@@ -13,7 +13,7 @@ This project features:
 ## 🛠️ Technologies Used
 
 - **JavaScript** ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=black)
-- **HTML** !![HTML](https://img.shields.io/badge/-HTML-E34F26?logo=html5&logoColor=white)
+- **HTML** ![HTML](https://img.shields.io/badge/-HTML-E34F26?logo=html5&logoColor=white)
 - **CSS** ![CSS](https://img.shields.io/badge/-CSS-1572B6?logo=css3&logoColor=white)
 
 ## 🎶 Audio Setup
@@ -28,4 +28,4 @@ To activate audio in the pages, follow these steps in **Chrome**:
 ## 📄 License
 
 This project does not use any specific license.
-Although, requirements are explicit in package.json.
+Although, requirements are explicit in package.json and package-lock.json.
