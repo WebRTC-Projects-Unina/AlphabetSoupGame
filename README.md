@@ -28,4 +28,4 @@ To activate audio in the pages, follow these steps in **Chrome**:
 ## 📄 License
 
 This project does not use any specific license.
-Although, requirements are explicit in package.json and package-lock.json.
+Although, dependencies are explicit in package.json.
